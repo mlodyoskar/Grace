@@ -1,7 +1,7 @@
 import { createPool } from "@vercel/postgres";
 import { boolean, date, integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
 import { drizzle } from "drizzle-orm/vercel-postgres";
-import { migrate } from "drizzle-orm/vercel-postgres/migrator";
+// import { migrate } from "drizzle-orm/vercel-postgres/migrator";
 import { sql } from "@vercel/postgres";
 
 export const accounts = pgTable("accounts", {
@@ -45,9 +45,9 @@ export const users = pgTable("users", {
  email: varchar("email", { length: 256 }),
 });
 
-const db = drizzle(sql);
-const mig = async () => {
- await migrate(db, { migrationsFolder: "./drizzle" });
-};
+// const db = drizzle(sql);
+// const mig = async () => {
+//  await migrate(db, { migrationsFolder: "./drizzle" });
+// };
 
-mig();
+// mig();
