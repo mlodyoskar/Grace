@@ -6,13 +6,13 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
  return (
   <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)} {...props}>
    <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
-    Overview
+    Panel
    </Link>
-   <Link href="/examples/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-    Customers
+   <Link href="/accounts" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+    Konta bakowe
    </Link>
-   <Link href="/examples/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-    Products
+   <Link href="/categories" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+    Kategorie
    </Link>
    <Link href="/examples/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
     Settings

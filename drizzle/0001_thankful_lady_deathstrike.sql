@@ -1,0 +1,1 @@
+ALTER TABLE "accounts" ADD COLUMN "description" varchar(256);

@@ -16,6 +16,7 @@ import Link from "next/link";
 
 export function UserNav() {
  const { data } = useSession();
+ const avatarUrl = data?.user?.image;
  const avatarFallback = data?.user?.name
   ?.split(" ")
   .map((n) => n[0])
@@ -26,7 +27,7 @@ export function UserNav() {
    <DropdownMenuTrigger asChild>
     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
      <Avatar className="h-8 w-8">
-      <AvatarImage src="/avatars/01.png" alt="@shadcn" />
+      <AvatarImage src={avatarUrl || ""} alt="User avatar" />
       <AvatarFallback>{avatarFallback}</AvatarFallback>
      </Avatar>
     </Button>
@@ -41,21 +42,17 @@ export function UserNav() {
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
      <DropdownMenuItem>
-      Profile
-      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-     </DropdownMenuItem>
-     <DropdownMenuItem>
       Billing
       <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
      </DropdownMenuItem>
      <DropdownMenuItem asChild>
-      <Link href="/settings">Settings</Link>
+      <Link href="/settings">Ustawienia</Link>
      </DropdownMenuItem>
      <DropdownMenuItem>New Team</DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
     <DropdownMenuItem onClick={() => signOut()}>
-     Log out
+     Wyloguj się
      <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
     </DropdownMenuItem>
    </DropdownMenuContent>

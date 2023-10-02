@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1696186917986,
+      "tag": "0000_lyrical_iron_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1696247352017,
+      "tag": "0001_thankful_lady_deathstrike",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1696247777054,
+      "tag": "0002_unknown_krista_starr",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1696253900555,
+      "tag": "0003_sturdy_gateway",
+      "breakpoints": true
+    }
+  ]
+}
