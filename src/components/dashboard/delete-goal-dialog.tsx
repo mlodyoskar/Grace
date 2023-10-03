@@ -4,11 +4,11 @@ import { deleteGoal } from "./actions";
 import { useDialogsStore } from "@/lib/store";
 
 interface Props {
- goalId: string;
+ goalId: string | null;
 }
 
 export const DeleteGoalDialog = ({ goalId }: Props) => {
- const deleteGoalWithId = deleteGoal.bind(null, goalId);
+ const deleteGoalWithId = deleteGoal.bind(null, goalId || "-1");
  const { dialogs, setIsOpen } = useDialogsStore();
  const isOpen = dialogs["delete-goal"];
 

@@ -1,9 +1,7 @@
 "use client";
 
-import { LoginButton } from "@/components/login-button";
 import { UserAuthForm } from "@/components/user-auth";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { motion } from "framer-motion";
 
