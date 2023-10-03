@@ -14,8 +14,12 @@ export const GET = async (req: NextRequest) => {
 
  console.log(session);
  const db = drizzle(sql);
- const result = await db.insert(categories).values({ name: "Kosmetyczne", user_id: 1, is_income: false, is_recurring: true });
- const data = await db.select().from(categories);
+ const date = new Date("1999-01-08");
 
- return new Response(JSON.stringify({ categories: data }));
+ // Format the date as 'YYYY-MM-DD'
+ const formattedDate = date.toISOString().split("T")[0];
+ const result = await db.insert(goals).values({ name: "Trenażer", amount: 250000, user_id: session.user.id, category_id: 1, date: formattedDate });
+ //  const data = await db.select().from(categories);
+
+ return new Response(JSON.stringify({ categories: result }));
 };

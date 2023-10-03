@@ -1,7 +1,7 @@
 import { createPool } from "@vercel/postgres";
 import { boolean, date, integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
 import { drizzle } from "drizzle-orm/vercel-postgres";
-// import { migrate } from "drizzle-orm/vercel-postgres/migrator";
+import { migrate } from "drizzle-orm/vercel-postgres/migrator";
 import { sql } from "@vercel/postgres";
 
 export const accounts = pgTable("accounts", {
@@ -32,22 +32,24 @@ export const transactions = pgTable("transactions", {
 
 export const goals = pgTable("goals", {
  id: serial("id").primaryKey(),
- name: varchar("name", { length: 256 }),
- amount: integer("amount"),
+ name: varchar("name", { length: 256 }).notNull(),
+ amount: integer("amount").notNull(),
  date: date("date"),
 
  user_id: integer("user_id").references(() => users.id),
  category_id: integer("category_id").references(() => categories.id),
 });
 
+export type Goal = typeof goals.$inferSelect; // return type when queried
+
 export const users = pgTable("users", {
  id: serial("id").primaryKey(),
  email: varchar("email", { length: 256 }),
 });
 
-// const db = drizzle(sql);
-// const mig = async () => {
-//  await migrate(db, { migrationsFolder: "./drizzle" });
-// };
+const db = drizzle(sql);
+const mig = async () => {
+ await migrate(db, { migrationsFolder: "./drizzle" });
+};
 
-// mig();
+mig();

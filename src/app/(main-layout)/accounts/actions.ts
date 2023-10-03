@@ -20,15 +20,6 @@ const createSchema = z
   balance: parseFloat(data.balance),
  }));
 
-const deleteSchema = z
- .object({
-  account_id: z.string().min(1).max(255),
- })
- .transform((data) => ({
-  ...data,
-  account_id: parseFloat(data.account_id),
- }));
-
 export const createAccount = async (formData: FormData) => {
  const db = drizzle(sql);
 

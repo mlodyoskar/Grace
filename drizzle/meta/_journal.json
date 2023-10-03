@@ -29,6 +29,13 @@
       "when": 1696253900555,
       "tag": "0003_sturdy_gateway",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1696321807748,
+      "tag": "0004_right_mauler",
+      "breakpoints": true
     }
   ]
 }
