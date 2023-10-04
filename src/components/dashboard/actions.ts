@@ -12,19 +12,19 @@ import { eq } from "drizzle-orm";
 const createSchema = z
  .object({
   name: z.string().min(1).max(255),
-  ammount: z.string().min(1).max(255),
+  amount: z.string().min(1).max(255),
  })
  .transform((data) => ({
   ...data,
-  ammount: parseFloat(data.ammount),
+  amount: parseFloat(data.amount),
  }));
 
 export const createGoal = async (date: Date | undefined, formData: FormData) => {
  const db = drizzle(sql);
 
- const { name, ammount } = createSchema.parse({
+ const { name, amount } = createSchema.parse({
   name: formData.get("name"),
-  ammount: formData.get("ammount"),
+  amount: formData.get("amount"),
  });
 
  const session = await getServerSession(authOptions);
@@ -34,7 +34,7 @@ export const createGoal = async (date: Date | undefined, formData: FormData) => 
 
  const formattedDate = date ? date.toISOString().split("T")[0] : null;
 
- await db.insert(goals).values({ name, amount: ammount * 100, user_id: session.user.id, date: formattedDate });
+ await db.insert(goals).values({ name, amount: amount * 100, user_id: session.user.id, date: formattedDate });
  revalidatePath("/dashboard");
 };
 

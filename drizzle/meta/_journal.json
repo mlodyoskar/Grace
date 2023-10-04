@@ -36,6 +36,20 @@
       "when": 1696321807748,
       "tag": "0004_right_mauler",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1696439503633,
+      "tag": "0005_lethal_warbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1696444965712,
+      "tag": "0006_pretty_wrecking_crew",
+      "breakpoints": true
     }
   ]
 }

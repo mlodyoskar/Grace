@@ -11,3 +11,10 @@ export function formatDate(date: Date | null) {
 
  return date.toLocaleDateString("pl-PL", options);
 }
+
+export const formatMoney = (amount: number) => {
+ return new Intl.NumberFormat("pl-PL", {
+  style: "currency",
+  currency: "PLN",
+ }).format(amount / 100);
+};

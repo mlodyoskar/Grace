@@ -3,8 +3,6 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import { Icons } from "./icons";
 import { signIn } from "next-auth/react";
 
@@ -16,7 +14,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
  return (
   <div className={cn("grid", className)} {...props}>
    <div className="relative"></div>
-   <Button onClick={() => signIn("google")} variant="default" type="button" disabled={isLoading}>
+   <Button
+    onClick={() => {
+     setIsLoading(true);
+     signIn("google");
+    }}
+    variant="default"
+    type="button"
+    disabled={isLoading}
+   >
     {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : <Icons.google className="mr-2 h-4 w-4" />} Google
    </Button>
   </div>

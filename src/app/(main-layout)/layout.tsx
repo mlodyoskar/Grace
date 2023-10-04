@@ -5,8 +5,6 @@ import { UserNav } from "@/components/user-nav";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { useState } from "react";
-import Grace from "@/public/grace.png";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
  const session = useSession();

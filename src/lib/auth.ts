@@ -4,7 +4,6 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { redirect } from "next/navigation";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -23,7 +22,7 @@ export const authOptions: AuthOptions = {
   }),
  ],
  callbacks: {
-  async signIn({ user, account, profile }) {
+  async signIn({ account, profile }) {
    if (!profile || !profile.email || !account) {
     return false;
    }
@@ -33,13 +32,13 @@ export const authOptions: AuthOptions = {
    if (account.provider === "google") {
     const email = profile.email;
     if (!dbUser) {
-     const result = await db.insert(users).values({ email });
+     await db.insert(users).values({ email });
     }
    }
 
    return true;
   },
-  async session({ session, token, user }) {
+  async session({ session }) {
    if (!session.user?.email) {
     return session;
    }

@@ -1,8 +1,4 @@
-import { createPool } from "@vercel/postgres";
-import { boolean, date, integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
-import { drizzle } from "drizzle-orm/vercel-postgres";
-import { migrate } from "drizzle-orm/vercel-postgres/migrator";
-import { sql } from "@vercel/postgres";
+import { boolean, date, integer, pgEnum, pgTable, serial, varchar } from "drizzle-orm/pg-core";
 
 export const accounts = pgTable("accounts", {
  id: serial("id").primaryKey(),
@@ -11,22 +7,54 @@ export const accounts = pgTable("accounts", {
  user_id: integer("user_id").references(() => users.id),
  description: varchar("description", { length: 256 }),
 });
+const icons = [
+ "transport",
+ "home",
+ "food",
+ "health",
+ "entertainment",
+ "education",
+ "clothes",
+ "sport",
+ "salary",
+ "gift",
+ "travel",
+ "book",
+ "electronic",
+ "tool",
+ "furniture",
+ "car",
+ "party",
+ "coffe",
+ "other",
+] as const;
+
+export const colors = ["red", "green", "blue", "yellow", "orange", "purple", "pink", "gray", "indigo", "sky"] as const;
+
+export const iconEnum = pgEnum("icon", icons);
+export const colorEnum = pgEnum("color", colors);
+
+export type CategoryIcon = (typeof icons)[number];
+export type Color = (typeof colors)[number];
 
 export const categories = pgTable("categories", {
  id: serial("id").primaryKey(),
- name: varchar("name", { length: 256 }),
+ name: varchar("name", { length: 256 }).notNull(),
  user_id: integer("user_id").references(() => users.id),
  is_income: boolean("is_income"),
- is_recurring: boolean("is_recurring"),
+ icon: iconEnum("icon").notNull().default("other"),
+ color: colorEnum("color").notNull().default("red"),
 });
+
+export type CategoryType = typeof categories.$inferSelect; // return type when queried
 
 export const transactions = pgTable("transactions", {
  id: serial("id").primaryKey(),
- name: varchar("name", { length: 256 }),
+ name: varchar("name", { length: 256 }).notNull(),
  user_id: integer("user_id").references(() => users.id),
  category_id: integer("category_id").references(() => categories.id),
  account_id: integer("account_id").references(() => accounts.id),
- amount: integer("amount"),
+ amount: integer("amount").notNull(),
  date: date("date"),
 });
 
@@ -47,9 +75,9 @@ export const users = pgTable("users", {
  email: varchar("email", { length: 256 }),
 });
 
-const db = drizzle(sql);
-const mig = async () => {
- await migrate(db, { migrationsFolder: "./drizzle" });
-};
+// const db = drizzle(sql);
+// // const mig = async () => {
+// await migrate(db, { migrationsFolder: "./drizzle" });
+// // };
 
-mig();
+// // mig();

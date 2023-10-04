@@ -36,10 +36,10 @@ export const NewGoalDialog = () => {
        <Input id="name" name="name" required placeholder="Wycieczka do Grecji" className="col-span-3" />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
-       <Label htmlFor="ammount" className="ml-2">
+       <Label htmlFor="amount" className="ml-2">
         Cena
        </Label>
-       <Input type="number" name="ammount" id="ammount" defaultValue="0" className="col-span-3" />
+       <Input type="number" name="amount" id="amount" defaultValue="0" className="col-span-3" />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
        <Label htmlFor="description" className="ml-2">

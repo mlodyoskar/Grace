@@ -1,16 +1,28 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { categories as categorieSchema } from "@/db/schema";
-import { PiggyBankIcon } from "lucide-react";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { CategoryType, categories as category } from "@/db/schema";
+
 import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 
+import { NewCategoryForm } from "./new-category-form";
+import { CategoriesSummary } from "./categories";
+
 const getUserCategories = async (userId: number) => {
  const db = drizzle(sql);
- const accounts = await db.select().from(categorieSchema).where(eq(categorieSchema.user_id, userId));
- return accounts;
+ const categories = await db.select().from(category).where(eq(category.user_id, userId));
+ return categories.reduce<{ income: CategoryType[]; expense: CategoryType[] }>(
+  (acc, curr) => {
+   if (curr.is_income) {
+    return { ...acc, income: [...acc.income, curr] };
+   } else {
+    return { ...acc, expense: [...acc.expense, curr] };
+   }
+  },
+  { income: [], expense: [] }
+ );
 };
 
 const CategoriesPage = async () => {
@@ -18,34 +30,28 @@ const CategoriesPage = async () => {
  const categories = await getUserCategories(session?.user.id as number);
 
  return (
-  <div className="hidden flex-col md:flex">
+  <div className="hidden bg-gray-50 flex-col md:flex">
    <div className="flex-1 space-y-4 p-8 pt-6">
-    <div className="flex items-center justify-between space-y-2">
-     <h2 className="text-3xl font-bold tracking-tight">Kategorie wydatków</h2>
-    </div>
-   </div>
-   <div className="grid grid-cols-4 gap-4 p-8">
-    {categories.map(({ id, name, is_income, is_recurring }) => {
-     return (
-      <Card key={id}>
-       <CardHeader className="flex flex-row items-center gap-1 space-y-0 pb-2">
-        <PiggyBankIcon className="h-4 w-4 text-muted-foreground" />
-
-        <CardTitle className="text-sm font-medium">{name}</CardTitle>
-       </CardHeader>
-       <CardContent>
-        {/* <div className="text-2xl font-bold">{balanceInPLN} PLN</div> */}
-        {/* <p className="text-xs text-muted-foreground">{description}</p> */}
-       </CardContent>
+    <div className="">
+     <h2 className="text-3xl font-bold tracking-tight">Kategorie</h2>
+     <div className="w-full grid gap-4 grid-cols-12 mt-8">
+      <div className="col-span-3">
+       <Card>
+        <CardHeader className="p-4 pb-0">
+         <CardTitle className="text-xl">Dodaj nową kategorie</CardTitle>
+        </CardHeader>
+        <NewCategoryForm />
+       </Card>
+      </div>
+      <Card className="col-span-9 px-4">
+       <CategoriesSummary title="Kategorie wydatków" categories={categories.expense} />
+       <CategoriesSummary title="Kategorie przychodów" categories={categories.income} />
       </Card>
-     );
-    })}
-   </div>
-   <div className="flex-1 space-y-4 p-8 pt-6">
-    <div className="flex items-center justify-between space-y-2">
-     <h2 className="text-3xl font-bold tracking-tight">Kategorie przychodów</h2>
+     </div>
     </div>
    </div>
+   <div className="grid grid-cols-4 gap-4 p-8"></div>
+   <div className="flex-1 space-y-4 p-8 pt-6"></div>
   </div>
  );
 };

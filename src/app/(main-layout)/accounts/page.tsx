@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { accounts as accountSchema, users } from "@/db/schema";
-import { PiggyBankIcon, PlusIcon } from "lucide-react";
+import { accounts as accountSchema } from "@/db/schema";
+import { PiggyBankIcon } from "lucide-react";
 import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { getServerSession } from "next-auth";
