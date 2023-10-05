@@ -10,9 +10,10 @@ import { eq } from "drizzle-orm";
 import { NewCategoryForm } from "./new-category-form";
 import { CategoriesSummary } from "./categories";
 
-const getUserCategories = async (userId: number) => {
+const getUserCategoriesGroupedByIsIncome = async (userId: number) => {
  const db = drizzle(sql);
  const categories = await db.select().from(category).where(eq(category.user_id, userId));
+
  return categories.reduce<{ income: CategoryType[]; expense: CategoryType[] }>(
   (acc, curr) => {
    if (curr.is_income) {
@@ -27,7 +28,10 @@ const getUserCategories = async (userId: number) => {
 
 const CategoriesPage = async () => {
  const session = await getServerSession(authOptions);
- const categories = await getUserCategories(session?.user.id as number);
+ const userId = session?.user.id;
+ if (!userId) return null;
+
+ const categories = await getUserCategoriesGroupedByIsIncome(userId);
 
  return (
   <div className="hidden bg-gray-50 flex-col md:flex">

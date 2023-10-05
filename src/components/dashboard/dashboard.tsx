@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { formatMoney } from "@/lib/utils";
 import { getServerSession } from "next-auth";
+import { NewTransactionModal } from "./new-transaction-modal";
 
 // const getUserGoals = async (userId: number) => {
 //  const db = drizzle(sql);

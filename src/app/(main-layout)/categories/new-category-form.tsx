@@ -8,6 +8,9 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { CategoryIcon, Color, colors } from "@/db/schema";
 import { cn } from "@/lib/utils";
+
+import React from "react";
+import { createCategory } from "./actions";
 import {
  TrainFrontIcon,
  ShirtIcon,
@@ -28,8 +31,6 @@ import {
  ChevronDown,
  ChevronUpIcon,
 } from "lucide-react";
-import React from "react";
-import { createCategory } from "./actions";
 
 export const iconSet: { name: CategoryIcon; icon: React.ReactNode }[] = [
  { name: "transport", icon: <TrainFrontIcon /> },

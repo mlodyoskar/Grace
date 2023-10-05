@@ -9,7 +9,7 @@ import { eq } from "drizzle-orm";
 import { NewAccountDialog } from "./new-account-dialog";
 import { OptionsAccountDialog } from "./options-account-dialog";
 
-const getUserAccounts = async (userId: number) => {
+export const getUserAccounts = async (userId: number) => {
  const db = drizzle(sql);
  const accounts = await db.select().from(accountSchema).where(eq(accountSchema.user_id, userId));
  return accounts;

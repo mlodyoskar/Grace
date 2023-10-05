@@ -5,11 +5,14 @@ import { sql } from "@vercel/postgres";
 
 export const accounts = pgTable("accounts", {
  id: serial("id").primaryKey(),
- name: varchar("name", { length: 256 }),
+ name: varchar("name", { length: 256 }).notNull(),
  balance: integer("balance").default(0),
  user_id: integer("user_id").references(() => users.id),
  description: varchar("description", { length: 256 }),
 });
+
+export type Account = typeof accounts.$inferSelect; // return type when queried
+
 const icons = [
  "transport",
  "home",

@@ -28,24 +28,20 @@ export const authOptions: AuthOptions = {
    }
    const dbUsers = await db.select().from(users).where(eq(users.email, profile.email));
    const dbUser = dbUsers[0];
-
    if (account.provider === "google") {
     const email = profile.email;
     if (!dbUser) {
      await db.insert(users).values({ email });
     }
    }
-
    return true;
   },
   async session({ session }) {
    if (!session.user?.email) {
     return session;
    }
-
    const dbUsers = await db.select().from(users).where(eq(users.email, session.user.email));
    const dbUser = dbUsers[0];
-
    session.user.id = dbUser.id;
    return session;
   },
