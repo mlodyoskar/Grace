@@ -1,4 +1,7 @@
+import { migrate } from "drizzle-orm/vercel-postgres/migrator";
 import { boolean, date, integer, pgEnum, pgTable, serial, varchar } from "drizzle-orm/pg-core";
+import { drizzle } from "drizzle-orm/vercel-postgres";
+import { sql } from "@vercel/postgres";
 
 export const accounts = pgTable("accounts", {
  id: serial("id").primaryKey(),
@@ -75,9 +78,9 @@ export const users = pgTable("users", {
  email: varchar("email", { length: 256 }),
 });
 
-// const db = drizzle(sql);
-// // const mig = async () => {
+const db = drizzle(sql);
+// const mig = async () => {
 // await migrate(db, { migrationsFolder: "./drizzle" });
-// // };
+// };
 
-// // mig();
+// mig();

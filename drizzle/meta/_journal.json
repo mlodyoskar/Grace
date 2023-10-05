@@ -50,6 +50,13 @@
       "when": 1696444965712,
       "tag": "0006_pretty_wrecking_crew",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1696491411718,
+      "tag": "0007_overconfident_infant_terrible",
+      "breakpoints": true
     }
   ]
 }

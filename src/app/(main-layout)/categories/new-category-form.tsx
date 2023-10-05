@@ -64,7 +64,7 @@ export const NewCategoryForm = () => {
 
  return (
   <form className="p-4" action={createCategoryWithIconAndColor}>
-   <div className="space-y-4">
+   <div className="space-y-6">
     <div className="grid w-full  gap-1.5">
      <Label htmlFor="name" className="ml-2">
       Nazwa
