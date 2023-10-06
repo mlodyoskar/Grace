@@ -1,0 +1,1 @@
+ALTER TABLE "transactions" RENAME COLUMN "name" TO "description";

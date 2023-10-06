@@ -56,9 +56,13 @@ export type CategoryType = typeof categories.$inferSelect; // return type when q
 
 export const transactions = pgTable("transactions", {
  id: serial("id").primaryKey(),
- name: varchar("name", { length: 256 }).notNull(),
- user_id: integer("user_id").references(() => users.id),
- category_id: integer("category_id").references(() => categories.id),
+ description: varchar("description", { length: 256 }),
+ user_id: integer("user_id")
+  .references(() => users.id)
+  .notNull(),
+ category_id: integer("category_id")
+  .references(() => categories.id)
+  .notNull(),
  account_id: integer("account_id").references(() => accounts.id),
  amount: integer("amount").notNull(),
  date: date("date"),
@@ -81,9 +85,9 @@ export const users = pgTable("users", {
  email: varchar("email", { length: 256 }),
 });
 
-const db = drizzle(sql);
-// const mig = async () => {
+// const db = drizzle(sql);
+// // // const mig = async () => {
 // await migrate(db, { migrationsFolder: "./drizzle" });
-// };
+// // };
 
-// mig();
+// // mig();

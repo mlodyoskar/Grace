@@ -1,32 +1,28 @@
+"use client";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { getUserAccounts } from "@/app/(main-layout)/accounts/page";
-import { eq } from "drizzle-orm";
-import { sql } from "@vercel/postgres";
-import { drizzle } from "drizzle-orm/vercel-postgres";
-import { categories } from "@/db/schema";
-import { iconSet } from "@/app/(main-layout)/categories/new-category-form";
 
-const getUserCategories = async (userId: number) => {
- const db = drizzle(sql);
- const userCategories = await db.select().from(categories).where(eq(categories.user_id, userId));
- return userCategories;
-};
+import { Account, CategoryType } from "@/db/schema";
+import { createTransaction } from "./actions";
+import { DatePicker } from "../ui/date-picker";
+import React from "react";
+import { useDialog } from "@/lib/store";
 
-export const ExpenseForm = async () => {
- const session = await getServerSession(authOptions);
- const userId = session?.user.id;
- if (!userId) return null;
+interface Props {
+ accounts: Account[];
+ categories: CategoryType[];
+}
 
- const accounts = await getUserAccounts(userId);
- const categories = await getUserCategories(userId);
+export const ExpenseForm = ({ accounts, categories }: Props) => {
+ const [date, setDate] = React.useState<Date | undefined>(new Date());
+ const createTransactionWithDate = createTransaction.bind(null, date);
+ const { openHandler } = useDialog("new-transaction");
 
  return (
-  <form className="mt-6">
+  <form onSubmit={() => openHandler(false)} action={createTransactionWithDate} className="mt-4">
    <div className="space-y-6">
     <div className="grid w-full gap-1.5">
      <Label htmlFor="amount" className="ml-2">
@@ -35,10 +31,10 @@ export const ExpenseForm = async () => {
      <Input id="amount" name="amount" required placeholder="0" type="number" className="col-span-3" />
     </div>
     <div className="grid w-full gap-1.5">
-     <Label htmlFor="account" className="ml-2">
+     <Label htmlFor="accountId" className="ml-2">
       Konto bankowe
      </Label>
-     <Select defaultValue={accounts[0].id.toString()}>
+     <Select name="accountId" defaultValue={accounts[0].id.toString()}>
       <SelectTrigger className="w-full">
        <SelectValue placeholder="Wybierz" />
       </SelectTrigger>
@@ -52,10 +48,10 @@ export const ExpenseForm = async () => {
      </Select>
     </div>
     <div className="grid w-full gap-1.5">
-     <Label htmlFor="account" className="ml-2">
+     <Label htmlFor="categoryId" className="ml-2">
       Kategoria
      </Label>
-     <Select defaultValue={categories[0].id.toString()}>
+     <Select name="categoryId" defaultValue={categories[0].id.toString()}>
       <SelectTrigger className="w-full">
        <SelectValue placeholder="Wybierz" />
       </SelectTrigger>
@@ -70,9 +66,21 @@ export const ExpenseForm = async () => {
       </SelectContent>
      </Select>
     </div>
+    <div className="grid w-full gap-1.5">
+     <Label htmlFor="categoryId" className="ml-2">
+      Data
+     </Label>
+     <DatePicker date={date} setDate={setDate} />
+    </div>
+    <div className="grid w-full gap-1.5">
+     <Label htmlFor="amount" className="ml-2">
+      Opis (opcjonalnie)
+     </Label>
+     <Input id="description" name="description" placeholder="Zakupy w biedronce" className="col-span-3" />
+    </div>
    </div>
    <Button className="w-full mt-6" size="lg" type="submit">
-    Dodaj transakcję
+    Dodaj wydatek
    </Button>
   </form>
  );

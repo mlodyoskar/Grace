@@ -99,7 +99,6 @@ export const columns: ColumnDef<ColumnGoal>[] = [
   id: "actions",
   cell: ({ row }) => {
    const goal = row.original;
-   console.log(goal);
 
    return (
     <DropdownMenu>

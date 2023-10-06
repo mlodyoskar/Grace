@@ -21,7 +21,7 @@ export const NewTransactionModal = ({ expenseForm, incomeForm }: Props) => {
   <Dialog onOpenChange={handleOpen} open={isOpen}>
    <DialogContent className="sm:max-w-[425px]">
     <DialogHeader>
-     <DialogTitle>Nowa transakcja</DialogTitle>
+     <DialogTitle className="mb-4">Nowa transakcja</DialogTitle>
      <div className="">
       <Tabs defaultValue="expense" className="w-full">
        <TabsList className="w-full">

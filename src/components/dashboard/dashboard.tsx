@@ -7,7 +7,6 @@ import { eq } from "drizzle-orm";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { formatMoney } from "@/lib/utils";
 import { getServerSession } from "next-auth";
-import { NewTransactionModal } from "./new-transaction-modal";
 
 // const getUserGoals = async (userId: number) => {
 //  const db = drizzle(sql);
@@ -31,7 +30,7 @@ const getUserExpensesByCategory = async (userId: number) => {
   })
   .from(categories)
   .leftJoin(transactions, eq(categories.id, transactions.category_id))
-  .where(drizzleSql`(${transactions.user_id}) = ${userId}`)
+  .where(drizzleSql`(${transactions.user_id}) = ${userId} and ${categories.is_income} = false`)
   .groupBy(categories.name)
   .orderBy(asc(categories.name));
 
@@ -42,8 +41,6 @@ const getUserExpensesByCategory = async (userId: number) => {
   amount: Number(category.amount),
   percentOfTotal: category.amount / totalSum,
  }));
-
- console.log(expenseByCategory, totalSum);
 
  return { expenseByCategory, totalSum };
 };
@@ -68,7 +65,7 @@ export const Dashboard = async () => {
  //  const goals = await getUserGoals(userId);
  const { expenseByCategory } = await getUserExpensesByCategory(userId);
  const { sum } = await getUserOverview(userId);
-
+ console.log(expenseByCategory);
  return (
   <div className="hidden flex-col md:flex bg-gray-100">
    <div className="grid grid-cols-12  gap-2 p-8 pt-6">
