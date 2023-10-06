@@ -4,9 +4,10 @@ import { authOptions } from "@/lib/auth";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { accounts, categories, transactions } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { formatMoney } from "@/lib/utils";
 import { getServerSession } from "next-auth";
+import { MonthlySpendings } from "./monthly-spendings";
 
 // const getUserGoals = async (userId: number) => {
 //  const db = drizzle(sql);
@@ -26,12 +27,14 @@ const getUserExpensesByCategory = async (userId: number) => {
  const sumsByCategory = await db
   .select({
    name: categories.name,
+   icon: categories.icon,
+   color: categories.color,
    amount: drizzleSql<number>`sum(${transactions.amount})`,
   })
   .from(categories)
   .leftJoin(transactions, eq(categories.id, transactions.category_id))
   .where(drizzleSql`(${transactions.user_id}) = ${userId} and ${categories.is_income} = false`)
-  .groupBy(categories.name)
+  .groupBy(categories.name, categories.icon, categories.color)
   .orderBy(asc(categories.name));
 
  const totalSum = sumsByCategory.reduce((acc, curr) => acc + Number(curr.amount), 0);
@@ -85,28 +88,12 @@ export const Dashboard = async () => {
     </div>
     <div className="col-span-9">
      <Card className=" space-y-2  bg-white ">
-      <CardHeader className="font-semibold p-4 tracking-tight">Twoje miesięczne wydatki</CardHeader>
+      <CardHeader className="">
+       <CardTitle className="font-semibold tracking-tight">Twoje miesięczne wydatki</CardTitle>
+      </CardHeader>
       <CardContent className="">
        {/* <ExpensesChart data={expenses} /> */}
-       <div className="flex flex-col gap-2">
-        {expenseByCategory.map(({ name, amount, percentOfTotal }) => {
-         const percent = Number((percentOfTotal * 100).toFixed());
-         const amountFormatted = formatMoney(amount);
-
-         return (
-          <div className="flex items-center justify-between" key={name}>
-           <div className="flex items-center gap-1">
-            <div className="h-2 w-2 bg-indigo-600 rounded-full" />
-            <p className="text-sm">{name}</p>
-           </div>
-           <div className="flex gap-2 justify-between">
-            <p className="text-sm text-gray-700 text-left">{amountFormatted}</p>
-            <p className="text-sm font-semibold">{percent}%</p>
-           </div>
-          </div>
-         );
-        })}
-       </div>
+       <MonthlySpendings expenses={expenseByCategory} />
       </CardContent>
      </Card>
     </div>
