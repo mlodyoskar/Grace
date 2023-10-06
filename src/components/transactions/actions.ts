@@ -36,5 +36,7 @@ export const createTransaction = async (date: Date | undefined, formData: FormDa
 
  await db
   .insert(transactions)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   .values({ description, amount: amount * 100, account_id: accountId, user_id: session.user.id, category_id: categoryId, date });
 };

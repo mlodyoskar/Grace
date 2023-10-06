@@ -9,7 +9,6 @@ import { Account, CategoryType } from "@/db/schema";
 import { createTransaction } from "./actions";
 import { DatePicker } from "../ui/date-picker";
 import React from "react";
-import { useDialog } from "@/lib/store";
 
 interface Props {
  accounts: Account[];
@@ -19,10 +18,9 @@ interface Props {
 export const IncomeForm = ({ accounts, categories }: Props) => {
  const [date, setDate] = React.useState<Date | undefined>(new Date());
  const createIncomeWithDate = createTransaction.bind(null, date);
- const { openHandler } = useDialog("new-transaction");
 
  return (
-  <form onSubmit={() => openHandler(false)} action={createIncomeWithDate} className="mt-4">
+  <form action={createIncomeWithDate} className="mt-4">
    <div className="space-y-6">
     <div className="grid w-full gap-1.5">
      <Label htmlFor="amount" className="ml-2">
